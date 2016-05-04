@@ -86,14 +86,9 @@ BasicGame.Game.prototype = {
 
 
         this.group.add(this.posts);
-
         this.required_posts_scale = this.posts.scale_factor * (420 / this.posts.height);
-
         this.posts.vectors = {};
         this.posts.vectors.pos = {};
-        //
-        // this.posts.scale.x = 0.5;
-        // this.posts.scale.y = 0.5;
 
         this.resetPosts();
 
@@ -102,7 +97,6 @@ BasicGame.Game.prototype = {
         this.ball.anchor.y = 0.5;
         this.group.add(this.ball);
 
-
         //desired ball scales
         this.required_ball_scale = 0.35 * (302 / this.ball.height);
         console.log('this.required_ball_scale', this.required_ball_scale);
@@ -110,13 +104,20 @@ BasicGame.Game.prototype = {
         //should probably change this is as the
         this.ball.rotation_rate = 0;//Math.random() - Math.random();
 
-
         //3d world vector attributes
         this.ball.vectors = {};
 
         this.ball.vectors.pos = {};
         this.ball.vectors.vel = {};
         this.ball.vectors.acc = {};
+
+        this.ball.shadow = this.game.add.sprite(0, 0, 'shadow');
+        this.ball.shadow.scale.x = 1.2;
+        this.ball.shadow.scale.y = 1.2;
+
+        this.ball.shadow.anchor.y = -0.8;
+        this.group.add(this.ball.shadow);
+
 
         this.resetBall();
 
@@ -342,6 +343,8 @@ BasicGame.Game.prototype = {
         this.ball.vectors.pos.x += this.ball.vectors.vel.x;
         this.ball.vectors.pos.y += this.ball.vectors.vel.y;
         this.ball.vectors.pos.z += this.ball.vectors.vel.z;
+
+
     },
 
     placeBall: function(){
@@ -351,6 +354,16 @@ BasicGame.Game.prototype = {
         this.ball.scale.x = point_deets.scale_y * (this.required_ball_scale);
         this.ball.scale.y = point_deets.scale_x * (this.required_ball_scale);
         this.ball.rotation += this.ball.rotation_rate;
+
+        //45 degrees
+        var point_deets = this.getPointOnScreen(this.ball.vectors.pos.x + (this.ball.vectors.pos.y / Math.tan(Math.PI/4)), 0, this.ball.vectors.pos.z);
+
+        this.ball.shadow.scale.x = point_deets.scale_x * (this.required_ball_scale);
+        this.ball.shadow.scale.y = point_deets.scale_y * (this.required_ball_scale);
+
+        this.ball.shadow.x = this.game.width/2 + point_deets._x;
+        this.ball.shadow.y = this.game.height/2 + point_deets._y;
+
 
     },
 

@@ -51,6 +51,8 @@ BasicGame.Preloader.prototype = {
         //this.load.image('windflag', 'images/windflag.png');
         this.load.image('windflag', 'images/windflag_360.png');
 
+        //this.load.image('windflag', 'images/windflag.png');
+        this.load.image('shadow', 'images/shadow.png');
 
 
         //this.load.image('posts', 'images/ball_rooi.png');
