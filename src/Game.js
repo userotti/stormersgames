@@ -41,7 +41,7 @@ BasicGame.Game.prototype = {
         this.viewer = {};
 
         this.viewer.x = 0;
-        this.viewer.y = 200;
+        this.viewer.y = 201;
         this.viewer.z = 0;
 
         this.score = 0;
