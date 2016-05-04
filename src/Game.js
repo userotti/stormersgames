@@ -471,7 +471,7 @@ BasicGame.Game.prototype = {
 
         this.negative_winds = []
         for (var i = 0; i < 3; i++){
-            var wind = this.game.add.sprite((i * 45) + 45, this.game.height - 40, 'windflag');
+            var wind = this.game.add.sprite(this.game.width - ((i * 45) + 45), this.game.height - 40, 'windflag');
             wind.anchor.x = 0.5;
             wind.anchor.y = 0.5;
             wind.scale.x = 0.17;
