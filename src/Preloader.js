@@ -56,9 +56,15 @@ BasicGame.Preloader.prototype = {
         //this.load.atlas('playButton', 'images/play_button.png', 'images/play_button.json');
 
         //this.load.audio('titleMusic', ['audio/music.ogg']);
-        this.load.audio('kick', ['audio/kick3.mp3']);
-        this.load.audio('miss', ['audio/ooh.mp3']);
-        this.load.audio('hit', ['audio/whistle.mp3']);
+        this.load.audio('kick', ['audio/kick3.mp3', 'audio/kick3.ogg']);
+        this.load.audio('miss', ['audio/ooh.mp3', 'audio/ooh.ogg']);
+        this.load.audio('hit', ['audio/whistle.mp3', 'audio/whistle.ogg']);
+
+        var self = this;
+        this.game.sound.setDecodedCallback(['kick','miss','hit'], function(){
+            self.ready = true;
+            console.log('done loading sounds');
+        }, this);
 
         //this.load.audio('kick2', ['audio/kick2.m4a']);
 
@@ -72,6 +78,7 @@ BasicGame.Preloader.prototype = {
         //	Once the load has finished we disable the crop because we're going to sit in the update loop for a short while as the music decodes
         this.preloadBar.cropEnabled = false;
 
+
     },
 
     update: function () {
@@ -81,12 +88,15 @@ BasicGame.Preloader.prototype = {
         //	You can jump right into the menu if you want and still play the music, but you'll have a few
         //	seconds of delay while the mp3 decodes - so if you need your music to be in-sync with your menu
         //	it's best to wait for it to decode here first, then carry on.
-
+        if (this.ready == true){
+            this.state.start('MainMenu');
+        } else {
+            console.log('not ready');
+        }
         //	If you don't have any music in your game then put the game.state.start line into the create function and delete
         //	the update function completely.
         //
-        this.ready = true;
-        this.state.start('MainMenu');
+
 
         // if (this.cache.isSoundDecoded('titleMusic') && this.ready == false)
         // {

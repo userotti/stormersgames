@@ -15,21 +15,17 @@ BasicGame.MainMenu.prototype = {
 		//	Here all we're doing is playing some music and adding a picture and button
 		//	Naturally I expect you to do something significantly better :)
 
-		this.music = this.add.audio('titleMusic');
-
+        this.kicksound = this.add.audio('kick');
+        this.miss_sound = this.add.audio('miss');
+        this.hit_sound = this.add.audio('hit');
 
 		this.title_screen = this.add.sprite(this.game.width/2, 0, 'titlepage');
         this.title_screen.anchor.x = 0.5;
 
-        var style = { font: "bold 24px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-        this.show_width = this.add.text(this.game.width/2, this.title_screen.height+ 50, 'screen width: ' + this.game.width, style);
-        this.show_width.anchor.x = 0.5;
-
-        this.show_height = this.add.text(this.game.width/2, this.title_screen.height+ 100, 'screen height: ' + this.game.height, style);
-        this.show_height.anchor.x = 0.5;
 
 
-		this.playButton = this.add.button(this.game.width/2, this.game.height/2, 'playButton', this.startGame, this);
+
+		this.playButton = this.add.button(this.game.width/2, this.game.height/2, 'playButton', this.playSounds, this);
         this.playButton.anchor.x = 0.5;
         this.playButton.anchor.y = 0.5;
 
@@ -42,6 +38,17 @@ BasicGame.MainMenu.prototype = {
 
 	},
 
+    playSounds: function(){
+        var random = Math.random() * 3;
+        if (random > 2){
+            this.kicksound.play();
+        } else if (random > 1){
+            this.miss_sound.play();
+        } else if (random > 0){
+            this.hit_sound.play();
+        }
+    },
+
 	startGame: function (pointer) {
 
 		//	Ok, the Play Button has been clicked or touched, so let's stop the music (otherwise it'll carry on playing)
@@ -51,6 +58,12 @@ BasicGame.MainMenu.prototype = {
 		this.state.start('Game');
         //this.music.play();
 
-	}
+	},
+
+    render: function() {
+        this.game.debug.soundInfo(this.kicksound, 20, 32);
+        this.game.debug.soundInfo(this.miss_sound, 20, 182);
+        this.game.debug.soundInfo(this.hit_sound, 20, 312);
+    }
 
 };
