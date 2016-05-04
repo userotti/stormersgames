@@ -18,10 +18,15 @@ BasicGame.Preloader.prototype = {
         this.background = this.add.sprite(this.game.width/2, 0, 'preloaderBackground');
         this.background.anchor.x = 0.5;
 
+        this.background.scale.x = 0.5;
+        this.background.scale.y = 0.5;
 
-        this.preloadBar = this.add.sprite(this.game.width/2, this.game.height/2, 'preloaderBar');
-        this.preloadBar.anchor.x = 0.5;
-        this.preloadBar.anchor.y = 0.5;
+
+        this.preloadBar = this.add.sprite((this.game.width/2) - 156, this.game.height/2, 'preloaderBar');
+
+        var style = { font: "bold 24px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+        this.score_ui = this.add.text(this.game.width/2, this.game.height/2 + 100, 'Loading...', style);
+        this.score_ui.anchor.x = 0.5;
 
         //	This sets the preloadBar sprite as a loader sprite.
         //	What that does is automatically crop the sprite from 0 to full-width
@@ -30,7 +35,7 @@ BasicGame.Preloader.prototype = {
 
         //	Here we load the rest of the assets our game needs.
         //	As this is just a Project Template I've not provided these assets, the lines below won't work as the files themselves will 404, they are just an example of use.
-        this.load.image('titlepage', 'images/title.png');
+        this.load.image('titlepage', 'images/robert.jpg');
         this.load.image('playButton', 'images/play_button.png');
 
         //this.load.image('grass', 'images/grass.png');

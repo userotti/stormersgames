@@ -129,9 +129,14 @@ BasicGame.Game.prototype = {
         this.kick_age = 0;
 
 
-        var style = { font: "bold 24px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-        this.score_ui = this.add.text(this.game.width/2, 10, this.score + ' out of ' + this.attempts, style);
-        this.score_ui.anchor.x = 0.5;
+        var style = { font: "bold 20px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+        this.score_ui1 = this.add.text(30, 20, this.score + ' out of ' + this.attempts, style);
+        this.score_ui1.anchor.x = 0;
+
+        var style = { font: "bold 20px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+        this.score_ui2 = this.add.text(this.game.width - 30, 20, this.score + ' out of ' + this.attempts, style);
+        this.score_ui2.anchor.x = 1;
+        this.setScore();
 
         this.wind_factor = 0;
 
@@ -511,7 +516,14 @@ BasicGame.Game.prototype = {
     },
 
     setScore: function(){
-        this.score_ui.text = this.score + ' out of ' + this.attempts;
+        this.score_ui1.text = this.score + ' out of ' + this.attempts;
+        if (this.attempts > 0){
+            this.score_ui2.visible = true;
+            this.score_ui2.text = Math.round((this.score * 100)/ this.attempts) + '%' ;
+        } else {
+            this.score_ui2.visible = false;
+        }
+
     },
 
     setupGrassSprite: function(){
