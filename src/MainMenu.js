@@ -22,12 +22,20 @@ BasicGame.MainMenu.prototype = {
 		this.title_screen = this.add.sprite(this.game.width/2, 0, 'titlepage');
         this.title_screen.anchor.x = 0.5;
 
-
-
-
-		this.playButton = this.add.button(this.game.width/2, this.game.height/2, 'playButton', this.playSounds, this);
+        this.playButton = this.add.button(this.game.width - 150, 50, 'playButton', this.startGame, this);
         this.playButton.anchor.x = 0.5;
         this.playButton.anchor.y = 0.5;
+
+        this.playButton.scale.x = 0.2;
+        this.playButton.scale.y = 0.2;
+
+
+
+
+
+		this.playSoundButton = this.add.button(this.game.width/2, this.game.height/2, 'playButton', this.playSounds, this);
+        this.playSoundButton.anchor.x = 0.5;
+        this.playSoundButton.anchor.y = 0.5;
 
 
 	},
