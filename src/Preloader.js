@@ -56,9 +56,9 @@ BasicGame.Preloader.prototype = {
         //this.load.atlas('playButton', 'images/play_button.png', 'images/play_button.json');
 
         //this.load.audio('titleMusic', ['audio/music.ogg']);
-        this.load.audio('kick', ['audio/kick3.ogg']);
-        this.load.audio('miss', ['audio/ooh.ogg']);
-        this.load.audio('hit', ['audio/whistle.ogg']);
+        this.load.audio('kick', ['audio/kick3.mp3']);
+        this.load.audio('miss', ['audio/ooh.mp3']);
+        this.load.audio('hit', ['audio/whistle.mp3']);
 
         //this.load.audio('kick2', ['audio/kick2.m4a']);
 
