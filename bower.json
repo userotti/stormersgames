@@ -1,0 +1,21 @@
+{
+  "name": "stormersgames",
+  "homepage": "https://github.com/userotti/stormersgames",
+  "description": "Group of games for the stormers rugby club",
+  "main": "",
+  "moduleType": [],
+  "authors": [
+    "Christian Frauenstein"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "phaser": "~2.4.7"
+  }
+}
