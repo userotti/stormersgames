@@ -25,8 +25,12 @@ BasicGame.MainMenu.prototype = {
         this.title_screen.anchor.x = 0.5;
         this.title_screen.anchor.y = 0.5;
 
-        this.title_screen.scale.x = this.title_screen.height / this.game.height;
-        this.title_screen.scale.y = this.title_screen.height / this.game.height;
+        var scale = this.game.width / this.title_screen.width;
+        this.title_screen.scale.x = scale;
+        this.title_screen.scale.y = scale;
+
+        console.log('this.title_screen.scale.x', this.title_screen.scale.x);
+        console.log('this.title_screen.scale.y', this.title_screen.scale.y);
 
 
         // this.playButton = this.add.button(this.game.width - 150, 50, 'playButton', this.startGame, this);
@@ -36,7 +40,7 @@ BasicGame.MainMenu.prototype = {
         // this.playButton.scale.x = 0.2;
         // this.playButton.scale.y = 0.2;
 
-		this.playSoundButton = this.add.button(this.game.width/2, this.game.height/2, 'playButton', this.startGame, this);
+		this.playSoundButton = this.add.button(this.game.width/2, this.game.height/2-100, 'playButton', this.startGame, this);
         this.playSoundButton.anchor.x = 0.5;
         this.playSoundButton.anchor.y = 0.5;
 

@@ -45,7 +45,7 @@ BasicGame.Game.prototype = {
         this.sounds.push(this.hit_sound);
 
         this.crowd_sound = this.add.audio('crowd');
-        this.crowd_sound.on_volume = 0.6;
+        this.crowd_sound.on_volume = 0.4;
         this.crowd_sound.volume = this.crowd_sound.on_volume;
         this.crowd_sound.loop = true;
         this.crowd_sound.play();
@@ -54,24 +54,30 @@ BasicGame.Game.prototype = {
         this.pole_sound = this.add.audio('pole');
         this.sounds.push(this.pole_sound);
 
+
+
+
+        //groups
+        this.background_group = this.game.add.group();
+        this.group = this.game.add.group();
+        this.group_ui = this.game.add.group();
+
         this.sound_on_button = this.add.button(this.game.width - 30, 30 , 'sound_on', this.soundOff, this);
         this.sound_on_button.anchor.x = 0.5;
         this.sound_on_button.anchor.y = 0.5;
-        this.sound_on_button.scale.x = 0.2;
-        this.sound_on_button.scale.y = 0.2;
-
+        this.sound_on_button.scale.x = 0.15;
+        this.sound_on_button.scale.y = 0.15;
         this.sound_on_button.visible = true;
-
 
         this.sound_off_button = this.add.button(this.game.width - 30, 30 , 'sound_off', this.soundOn, this);
         this.sound_off_button.anchor.x = 0.5;
         this.sound_off_button.anchor.y = 0.5;
         this.sound_off_button.visible = false;
-        this.sound_off_button.scale.x = 0.2;
-        this.sound_off_button.scale.y = 0.2;
-        //groups
-        this.background_group = this.game.add.group();
-        this.group = this.game.add.group();
+        this.sound_off_button.scale.x = 0.15;
+        this.sound_off_button.scale.y = 0.15;
+
+        this.group_ui.add(this.sound_on_button);
+        this.group_ui.add(this.sound_off_button);
 
         //Game constants
         this.viewer = {};
@@ -105,6 +111,7 @@ BasicGame.Game.prototype = {
 
         this.setupCrowdSprite();
         this.setupGrassSprite();
+
 
 
         this.posts = this.game.add.sprite( this.game.width/2, this.game.height/2 + 40, 'posts');
@@ -548,12 +555,12 @@ BasicGame.Game.prototype = {
     createBallsUI: function(total){
         this.balls_ui = [];
         for (var i = 0; i < total; i++){
-            var ball = this.game.add.sprite((i * 45) + 45, 50, 'ball');
+            var ball = this.game.add.sprite((i * 25) + 25, 25, 'ball');
             ball.anchor.x = 0.5;
             ball.anchor.y = 0.5;
             ball.rotation = Math.random();
-            ball.scale.x = -0.10;
-            ball.scale.y = 0.10;
+            ball.scale.x = -0.07;
+            ball.scale.y = 0.07;
             ball.visible = false;
             this.balls_ui.push(ball);
         }
