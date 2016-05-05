@@ -28,11 +28,47 @@ BasicGame.Game.prototype = {
 
     create: function () {
 
-        //
-        this.kicksound = this.add.audio('kick');
-        this.miss_sound = this.add.audio('miss');
-        this.hit_sound = this.add.audio('hit');
+        //player
+        this.game.player_stats = {};
 
+
+        //All sounds
+        this.sounds = [];
+
+        this.kicksound = this.add.audio('kick');
+        this.sounds.push(this.kicksound);
+
+        this.miss_sound = this.add.audio('miss');
+        this.sounds.push(this.miss_sound);
+
+        this.hit_sound = this.add.audio('hit');
+        this.sounds.push(this.hit_sound);
+
+        this.crowd_sound = this.add.audio('crowd');
+        this.crowd_sound.on_volume = 0.6;
+        this.crowd_sound.volume = this.crowd_sound.on_volume;
+        this.crowd_sound.loop = true;
+        this.crowd_sound.play();
+        this.sounds.push(this.crowd_sound);
+
+        this.pole_sound = this.add.audio('pole');
+        this.sounds.push(this.pole_sound);
+
+        this.sound_on_button = this.add.button(this.game.width - 30, 30 , 'sound_on', this.soundOff, this);
+        this.sound_on_button.anchor.x = 0.5;
+        this.sound_on_button.anchor.y = 0.5;
+        this.sound_on_button.scale.x = 0.2;
+        this.sound_on_button.scale.y = 0.2;
+
+        this.sound_on_button.visible = true;
+
+
+        this.sound_off_button = this.add.button(this.game.width - 30, 30 , 'sound_off', this.soundOn, this);
+        this.sound_off_button.anchor.x = 0.5;
+        this.sound_off_button.anchor.y = 0.5;
+        this.sound_off_button.visible = false;
+        this.sound_off_button.scale.x = 0.2;
+        this.sound_off_button.scale.y = 0.2;
         //groups
         this.background_group = this.game.add.group();
         this.group = this.game.add.group();
@@ -46,6 +82,8 @@ BasicGame.Game.prototype = {
 
         this.score = 0;
         this.attempts = 0;
+
+        this.balls_remaining = Math.floor(Math.random()*4) + 4;
 
         //leke dist 380
         this.viewer.focus_dist = 380;
@@ -74,19 +112,15 @@ BasicGame.Game.prototype = {
         this.posts.anchor.y = 1;
 
         this.posts.scale_factor = 2.85;
-
         this.posts.hit_area_width = this.posts.scale_factor * 254;
         this.posts.inner_hit_area_width = this.posts.scale_factor * 209;
-
         this.posts.world_height = this.posts.scale_factor * 411;
+        this.required_posts_scale = this.posts.scale_factor * (420 / this.posts.height);
 
         //image dependent
         this.posts.cross_bar_height = 0.38;
-
-
-
         this.group.add(this.posts);
-        this.required_posts_scale = this.posts.scale_factor * (420 / this.posts.height);
+
         this.posts.vectors = {};
         this.posts.vectors.pos = {};
 
@@ -130,35 +164,53 @@ BasicGame.Game.prototype = {
         this.kick_age = 0;
 
 
-        var style = { font: "bold 20px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-        this.score_ui1 = this.add.text(30, 20, this.score + ' out of ' + this.attempts, style);
-        this.score_ui1.anchor.x = 0;
+        // var style = { font: "bold 20px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+        // this.score_ui1 = this.add.text(30, 20, this.score + ' out of ' + this.attempts, style);
+        // this.score_ui1.anchor.x = 0;
+        // this.score_ui1.visible = false;
+        //
+        //
+        // var style = { font: "bold 20px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+        // this.score_ui2 = this.add.text(this.game.width - 30, 20, this.score + ' out of ' + this.attempts, style);
+        // this.score_ui2.anchor.x = 1;
+        // this.score_ui2.visible = false;
+        //
+        //
+        // var style = { font: "bold 20px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+        // this.balls_remaining_ui = this.add.text(30, 20, 'Balls: ' + this.balls_remaining, style);
+        // this.balls_remaining_ui.anchor.x = 0;
 
-        var style = { font: "bold 20px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-        this.score_ui2 = this.add.text(this.game.width - 30, 20, this.score + ' out of ' + this.attempts, style);
-        this.score_ui2.anchor.x = 1;
-        this.setScore();
+        //this.setScore();
 
         this.wind_factor = 0;
+
+        this.createBallsUI(this.balls_remaining);
+        this.resetBallsUI();
+
 
         this.createWindUI();
         this.resetWind();
 
         this.game.input.onDown.add(function(pointer) {
 
-            if (!this.kicked){
-                this.swipeCoordX = pointer.clientX;
-                this.swipeCoordY = pointer.clientY;
+            if (pointer.clientY > this.game.height/2){
 
-                this.draging = true;
-                this.draging_counter = 0;
+
+                if (!this.kicked){
+                    this.swipeCoordX = pointer.clientX;
+                    this.swipeCoordY = pointer.clientY;
+
+                    this.draging = true;
+                    this.draging_counter = 0;
+                }
             }
+
 
         }, this);
 
         this.game.input.onUp.add(function(pointer) {
 
-            if (!this.kicked){
+            if (!this.kicked && (this.draging_counter > 0)){
                 this.swipeCoordX2 = pointer.clientX;
                 this.swipeCoordY2 = pointer.clientY;
 
@@ -229,7 +281,7 @@ BasicGame.Game.prototype = {
                             if (!this.ball.bounces){
                                 console.log('yes!');
                                 this.score++;
-                                this.setScore();
+
                                 this.kick_age = this.kick_age + 100;
                                 this.hit_sound.play();
 
@@ -248,7 +300,7 @@ BasicGame.Game.prototype = {
                                 this.ball.bounces++;
                                 this.ball.vectors.pos.z = this.posts.vectors.pos.z + 0.1;
                                 this.setBallRoationRate(0.01);
-                                this.miss_sound.play();
+                                this.pole_sound.play();
 
                                 console.log('no. hit the cross barr!');
                             } else {
@@ -269,12 +321,12 @@ BasicGame.Game.prototype = {
                             this.ball.bounces++;
                             this.ball.vectors.pos.z = this.posts.vectors.pos.z + 0.1;
                             this.setBallRoationRate(0.01);
-                            this.miss_sound.play();
+                            this.pole_sound.play();
                         } else {
                             if (!this.ball.bounces){
                                 console.log('yes!');
                                 this.score++;
-                                this.setScore();
+
                                 this.kick_age = this.kick_age + 100;
                                 this.hit_sound.play();
 
@@ -377,7 +429,8 @@ BasicGame.Game.prototype = {
         this.kicked = true;
         this.kick_done = false;
         this.attempts++;
-        this.setScore();
+        this.balls_remaining--;
+        this.resetBallsUI();
 
         console.log('this.ball.vectors.vel.y:', this.ball.vectors.vel.y);
 
@@ -410,6 +463,16 @@ BasicGame.Game.prototype = {
     },
 
     resetBall: function() {
+
+        if (this.balls_remaining == 0){
+            this.game.player_stats.accuracy = Math.round((this.score * 100)/ this.attempts) + '%';
+            this.game.player_stats.attempts = this.attempts;
+            this.game.player_stats.score = this.score;
+
+
+            this.soundStop();
+            this.state.start('Done');
+        }
         //initial placement 560 680
         this.ball.vectors.pos.x = (Math.random() - Math.random()) * 100;//this.game.width/2;
         this.ball.vectors.pos.y = 5;
@@ -440,7 +503,7 @@ BasicGame.Game.prototype = {
         //initial placement
         this.posts.vectors.pos.x = (Math.random() - Math.random()) * 500;
         this.posts.vectors.pos.y = 0;
-        this.posts.vectors.pos.z = -(Math.random() * 1000) -1500;
+        this.posts.vectors.pos.z = -1750;
 
         //place posts
         var point_deets = this.getPointOnScreen(this.posts.vectors.pos.x, this.posts.vectors.pos.y, this.posts.vectors.pos.z)
@@ -482,6 +545,20 @@ BasicGame.Game.prototype = {
 
     },
 
+    createBallsUI: function(total){
+        this.balls_ui = [];
+        for (var i = 0; i < total; i++){
+            var ball = this.game.add.sprite((i * 45) + 45, 50, 'ball');
+            ball.anchor.x = 0.5;
+            ball.anchor.y = 0.5;
+            ball.rotation = Math.random();
+            ball.scale.x = -0.10;
+            ball.scale.y = 0.10;
+            ball.visible = false;
+            this.balls_ui.push(ball);
+        }
+    },
+
     resetWind: function(){
         this.wind_factor = Math.floor(Math.random() * (3 - (-3) + 1)) + -3;
         this.positive_winds.forEach(function(wind){
@@ -514,6 +591,17 @@ BasicGame.Game.prototype = {
 
     },
 
+    resetBallsUI: function(){
+        this.balls_ui.forEach(function(ball){
+            ball.visible = false;
+        })
+
+        for (var i = 0; i < this.balls_remaining; i++){
+            this.balls_ui[i].visible = true;
+        }
+
+    },
+
     setBallRoationRate: function(rate){
         this.ball.rotation_rate = (Math.random() - Math.random()) * (this.getBallSpeed() * rate);
     },
@@ -528,16 +616,7 @@ BasicGame.Game.prototype = {
         this.background_group.add(this.crowd);
     },
 
-    setScore: function(){
-        this.score_ui1.text = this.score + ' out of ' + this.attempts;
-        if (this.attempts > 0){
-            this.score_ui2.visible = true;
-            this.score_ui2.text = Math.round((this.score * 100)/ this.attempts) + '%' ;
-        } else {
-            this.score_ui2.visible = false;
-        }
 
-    },
 
     setupGrassSprite: function(){
         this.grass = this.game.add.sprite(0, 0, 'grass');
@@ -548,6 +627,41 @@ BasicGame.Game.prototype = {
 
         this.background_group.add(this.grass);
     },
+
+    soundOff: function(){
+
+        console.log('soundOff');
+
+        this.sound_on_button.visible = false;
+        this.sound_off_button.visible = true;
+
+        this.sounds.forEach(function(sound){
+            sound.volume = 0;
+        })
+    },
+
+    soundOn: function(){
+        this.sound_on_button.visible = true;
+        this.sound_off_button.visible = false;
+
+        console.log('soundOn');
+        this.sounds.forEach(function(sound){
+            if (sound.on_volume){
+                sound.volume = sound.on_volume
+            } else {
+                sound.volume = 1;
+            };
+        })
+    },
+
+    soundStop: function(){
+
+        console.log('soundOn');
+        this.sounds.forEach(function(sound){
+            sound.stop();
+        })
+    },
+
 
     quitGame: function (pointer) {
 

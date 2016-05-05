@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-	<title>Phaser Full Screen Mobile Example</title>
+	<title>Stormer Kicking Practice</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="chrome=1, IE=9">
 	<meta name="format-detection" content="telephone=no">
@@ -41,6 +41,7 @@
 	<script src="src/Preloader.js"></script>
 	<script src="src/MainMenu.js"></script>
 	<script src="src/Game.js"></script>
+    <script src="src/Done.js"></script>
 </head>
 <body>
 
@@ -62,6 +63,8 @@
 	game.state.add('Preloader', BasicGame.Preloader);
 	game.state.add('MainMenu', BasicGame.MainMenu);
 	game.state.add('Game', BasicGame.Game);
+    game.state.add('Done', BasicGame.Done);
+
 
     //
 	// //	Now start the Boot state.

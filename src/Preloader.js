@@ -13,14 +13,7 @@ BasicGame.Preloader.prototype = {
     preload: function () {
 
         console.log(this);
-        //	These are the assets we loaded in Boot.js
-        //	A nice sparkly background and a loading progress bar
-        this.background = this.add.sprite(this.game.width/2, 0, 'preloaderBackground');
-        this.background.anchor.x = 0.5;
-
-        this.background.scale.x = 0.5;
-        this.background.scale.y = 0.5;
-
+        
 
         this.preloadBar = this.add.sprite((this.game.width/2) - 156, this.game.height/2, 'preloaderBar');
 
@@ -54,8 +47,12 @@ BasicGame.Preloader.prototype = {
         //this.load.image('windflag', 'images/windflag.png');
         this.load.image('shadow', 'images/shadow.png');
 
+        //this.load.image('windflag', 'images/windflag.png');
+        this.load.image('sound_on', 'images/sound_on.png');
+        this.load.image('sound_off', 'images/sound_off.png');
 
-        //this.load.image('posts', 'images/ball_rooi.png');
+        this.load.image('retry', 'images/retry.png');
+
 
 
 
@@ -64,8 +61,16 @@ BasicGame.Preloader.prototype = {
 
         //this.load.audio('titleMusic', ['audio/music.ogg']);
         this.load.audio('kick', ['audio/kick3.mp3', 'audio/kick3.ogg']);
-        this.load.audio('miss', ['audio/ooh.mp3', 'audio/ooh.ogg']);
+        //this.load.audio('miss', ['audio/ooh.mp3', 'audio/ooh.ogg']);
         this.load.audio('hit', ['audio/whistle.mp3', 'audio/whistle.ogg']);
+
+        this.load.audio('crowd', ['audio/crowd.mp3', 'audio/crowd.ogg']);
+        this.load.audio('miss', ['audio/miss.mp3', 'audio/miss.ogg']);
+        this.load.audio('pole', ['audio/pole.mp3', 'audio/pole.ogg']);
+
+        this.load.audio('smack', ['audio/smack.mp3', 'audio/smack.ogg']);
+
+
 
         var self = this;
         this.game.sound.setDecodedCallback(['kick','miss','hit'], function(){

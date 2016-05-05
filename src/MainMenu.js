@@ -21,8 +21,13 @@ BasicGame.MainMenu.prototype = {
 
 
 
-		this.title_screen = this.add.sprite(this.game.width/2, 0, 'titlepage');
+		this.title_screen = this.add.sprite(this.game.width/2, this.game.height/2, 'titlepage');
         this.title_screen.anchor.x = 0.5;
+        this.title_screen.anchor.y = 0.5;
+
+        this.title_screen.scale.x = this.title_screen.height / this.game.height;
+        this.title_screen.scale.y = this.title_screen.height / this.game.height;
+
 
         // this.playButton = this.add.button(this.game.width - 150, 50, 'playButton', this.startGame, this);
         // this.playButton.anchor.x = 0.5;
